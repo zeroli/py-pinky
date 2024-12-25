@@ -1,2 +1,17 @@
-3 + (30 * 2) + (312 * -3)
-a + b * c - (d * f - k)
+3 + 30 * 2 + (312 * -3)
+
+#BinOp(+
+#      BinOp(+
+#            Integer(3)
+#            BinOp(*
+#                  Integer(30)
+#                  Integer(2)
+#            )
+#      )
+#      Group(
+#        BinOp(*
+#              Integer(312)
+#              UnOp(- Integer(3))
+#        )
+#      )
+#)

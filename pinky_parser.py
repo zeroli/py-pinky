@@ -4,8 +4,12 @@ from models import *
 class Parser(object):
     def __init__(self, tokens):
         self.tokens = tokens
-        self.curr = 0
-        self.prev_token = None
+        self.curr = 0 # next token position
+
+    # parsing entrance
+    def parse(self):
+        ast = self.expr()
+        return ast
 
     def grouping(self):
         return Group(self.expr())
@@ -80,18 +84,54 @@ class Parser(object):
             term = BinOp(op, term, right)
         return term
 
-    def parse(self):
-        ast = self.expr()
-        return ast
-
+    # ######################
+    # helper functions
+    # ######################
     def match(self, token_type):
+        '''
+        test if current token matches with given one
+        if matches, consume current token, and advance to next token as well, and return True
+        otherwise, return False
+        '''
         if self.curr >= len(self.tokens):
             return False
-        if self.tokens[self.curr].token_type != token_type:
+        if not self.peek_match(token_type):
             return False
-        self.prev_token = self.tokens[self.curr]
-        self.curr += 1
+        self.advance()
         return True
 
+    def expect(self, token_type):
+        '''
+        test if current token matches with given one
+        if matches, consume/return current token, and advance to next token as well
+        otherwise, raise error
+        '''
+        if not self.match(token_type):
+            raise SyntaxError(f'Expect {token_type!r}, found {self.peek().lexeme!r}')
+        return self.previous_token()
+
+    def advance(self):
+        '''
+        consume/return current token, and advance to next token
+        '''
+        if self.curr >= len(self.tokens):
+            return Token(TOK_EOF, '')
+        self.curr += 1
+        return self.previous_token()
+
+    def peek(self):
+        '''
+        peek/return next token without consuming it
+        '''
+        return self.tokens[self.curr]
+
+    def peek_match(self, token_type):
+        '''
+        peek next token and test if it matches with given one
+        return True if matches, without consume/advance
+        return False if no match
+        '''
+        return self.peek().token_type == token_type
+
     def previous_token(self):
-        return self.prev_token
+        return self.tokens[self.curr - 1]

@@ -52,6 +52,8 @@ TOK_PRINT       = 'TOK_PRINT'
 TOK_PRINTLN     = 'TOK_PRINTLN'
 TOK_RET         = 'TOK_RET'
 
+TOK_EOF         = 'TOK_EOF'
+
 # dict for reserverd keywords
 keywords = {
     'if'        : TOK_IF,

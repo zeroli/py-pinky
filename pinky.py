@@ -20,5 +20,5 @@ if __name__ == '__main__':
         print()
 
         ast = Parser(tokens).parse()
-        print("PARSER:")
+        print("PARSED AST:")
         print(ast)
