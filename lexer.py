@@ -103,8 +103,12 @@ class Lexer(object):
                     self.add_token(TOK_ASSIGN)
                 else:
                     self.add_token(TOK_COLON)
+            elif ch == '\'' or ch == '"':
+                self.scan_string(ch)
             elif ch.isdigit():
                 self.scan_number()
+            elif ch.isalpha() or ch == '_':
+                self.scan_identifier()
 
         return self.tokens
 
@@ -118,3 +122,23 @@ class Lexer(object):
             self.add_token(TOK_FLOAT)
         else:
             self.add_token(TOK_INTEGER)
+
+    def scan_string(self, start_quote):
+        while not self.eof() and self.peek() != start_quote:
+            if self.peek() == '\n':
+                self.line += 1
+            self.advance()
+        if self.eof():
+            raise SyntaxError(f"line {self.line} not closed with quote `{start_quote}` for string")
+        self.advance()
+        # strip the start/end quote
+        self.start += 1
+        self.curr -= 1
+        self.add_token(TOK_STRING)
+        self.advance()
+        self.advance()
+
+    def scan_identifier(self):
+        while self.peek().isalnum() or self.peek() == '_':
+            self.advance()
+        self.add_token(TOK_IDENTIFIER)
