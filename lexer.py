@@ -109,7 +109,8 @@ class Lexer(object):
                 self.scan_number()
             elif ch.isalpha() or ch == '_':
                 self.scan_identifier()
-
+            else:
+                raise SyntaxError(f'line {self.line} Error at `{ch}`: Unexpected character.')
         return self.tokens
 
     def scan_number(self):
