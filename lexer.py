@@ -67,7 +67,7 @@ class Lexer(object):
                 # float number may start with '.': `.323`
                 if self.peek().isdigit():
                     self.advance()
-                    while not self.eof() and self.peek().isdigit():
+                    while self.peek().isdigit():
                         self.advance()
                     self.add_token(TOK_FLOAT)
                 else:
@@ -104,11 +104,11 @@ class Lexer(object):
                 else:
                     self.add_token(TOK_COLON)
             elif ch.isdigit():
-                while not self.eof() and self.peek().isdigit():
+                while self.peek().isdigit():
                     self.advance()
                 if self.peek() == '.':
                     self.advance()  # consume '.'
-                    while not self.eof() and self.peek().isdigit():
+                    while self.peek().isdigit():
                         self.advance()
                     self.add_token(TOK_FLOAT)
                 else:
