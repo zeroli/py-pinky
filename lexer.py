@@ -17,15 +17,25 @@ class Lexer(object):
         return self.source[self.curr]
 
     def lookahead(self, n=1):
+        if self.curr + n >= len(self.source):
+            return '\0'
         return self.source[self.curr + n]
 
     def match(self, ch):
-        if self.curr >= len(self.source):
+        """
+        check if `ch` matches with current char and move forward with True returned
+        otherwise, return False
+        """
+        if self.eof():
             return False
         if self.source[self.curr] != ch:
             return False
         self.curr += 1
         return True
+
+    def eof(self):
+        """check if scanning beyong the end(EOF)"""
+        return self.curr >= len(self.source)
 
     def add_token(self, token_type):
         self.tokens.append(Token(token_type, self.source[self.start:self.curr], self.line))
@@ -40,7 +50,7 @@ class Lexer(object):
             elif ch == '\r': pass
             elif ch == '\t': pass
             elif ch == '#' :
-                while self.lookahead() != '\n':
+                while not self.eof() and self.peek() != '\n':
                     self.advance()
             elif ch == '+': self.add_token(TOK_PLUS)
             elif ch == '-': self.add_token(TOK_MINUS)
