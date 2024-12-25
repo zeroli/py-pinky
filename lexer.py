@@ -104,14 +104,17 @@ class Lexer(object):
                 else:
                     self.add_token(TOK_COLON)
             elif ch.isdigit():
-                while self.peek().isdigit():
-                    self.advance()
-                if self.peek() == '.':
-                    self.advance()  # consume '.'
-                    while self.peek().isdigit():
-                        self.advance()
-                    self.add_token(TOK_FLOAT)
-                else:
-                    self.add_token(TOK_INTEGER)
+                self.scan_number()
 
         return self.tokens
+
+    def scan_number(self):
+        while self.peek().isdigit():
+            self.advance()
+        if self.peek() == '.':
+            self.advance()  # consume '.'
+            while self.peek().isdigit():
+                self.advance()
+            self.add_token(TOK_FLOAT)
+        else:
+            self.add_token(TOK_INTEGER)
