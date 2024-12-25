@@ -95,5 +95,15 @@ class Lexer(object):
                     self.add_token(TOK_ASSIGN)
                 else:
                     self.add_token(TOK_COLON)
+            elif ch.isdigit():
+                while not self.eof() and self.peek().isdigit():
+                    self.advance()
+                if self.peek() == '.':
+                    self.advance()  # consume '.'
+                    while not self.eof() and self.peek().isdigit():
+                        self.advance()
+                    self.add_token(TOK_FLOAT)
+                else:
+                    self.add_token(TOK_INTEGER)
 
         return self.tokens
