@@ -19,7 +19,9 @@ class Lexer(object):
     def lookahead(self, n=1):
         return self.source[self.curr + n]
 
-    def consume(self, ch):
+    def match(self, ch):
+        if self.curr >= len(self.source):
+            return False
         if self.source[self.curr] != ch:
             return False
         self.curr += 1
@@ -54,11 +56,34 @@ class Lexer(object):
             elif ch == '.': self.add_token(TOK_DOT)
             elif ch == '^': self.add_token(TOK_CARET)
             elif ch == '%': self.add_token(TOK_MOD)
-            elif ch == ':': self.add_token(TOK_COLON)
             elif ch == ';': self.add_token(TOK_SEMICOLON)
             elif ch == '?': self.add_token(TOK_QUESTION)
-            elif ch == '~': self.add_token(TOK_NOT)
-            elif ch == '>': self.add_token(TOK_GT)
-            elif ch == '<': self.add_token(TOK_LT)
+            elif ch == '=':
+                if self.match('='):
+                    self.add_token(TOK_EQ)
+            elif ch == '~':
+                if self.match('='):
+                    self.add_token(TOK_NE)
+                else:
+                    self.add_token(TOK_NOT)
+            elif ch == '<':
+                if self.match('='):
+                    self.add_token(TOK_LE)
+                elif self.match('<'):
+                    self.add_token(TOK_LTLT)
+                else:
+                    self.add_token(TOK_LT)
+            elif ch == '>':
+                if self.match('='):
+                    self.add_token(TOK_GE)
+                elif self.match('>'):
+                    self.add_token(TOK_GTGT)
+                else:
+                    self.add_token(TOK_GT)
+            elif ch == ':':
+                if self.match('='):
+                    self.add_token(TOK_ASSIGN)
+                else:
+                    self.add_token(TOK_COLON)
 
         return self.tokens
