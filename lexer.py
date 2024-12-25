@@ -63,7 +63,15 @@ class Lexer(object):
             elif ch == '[': self.add_token(TOK_LSQUAR)
             elif ch == ']': self.add_token(TOK_RSQUAR)
             elif ch == ',': self.add_token(TOK_COMMA)
-            elif ch == '.': self.add_token(TOK_DOT)
+            elif ch == '.':
+                # float number may start with '.': `.323`
+                if self.peek().isdigit():
+                    self.advance()
+                    while not self.eof() and self.peek().isdigit():
+                        self.advance()
+                    self.add_token(TOK_FLOAT)
+                else:
+                    self.add_token(TOK_DOT)
             elif ch == '^': self.add_token(TOK_CARET)
             elif ch == '%': self.add_token(TOK_MOD)
             elif ch == ';': self.add_token(TOK_SEMICOLON)
