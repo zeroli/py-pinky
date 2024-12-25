@@ -27,10 +27,10 @@ class Parser(object):
         if self.match(TOK_IDENTIFIER):
             return self.ident()
         if self.match(TOK_LPAREN):
-            expr = self.grouping()
+            expr = self.expr()
             if not self.match(TOK_RPAREN):
                 raise SyntaxError(f'Expected ")" to close')
-            return expr
+            return Group(expr)
 
     def unary(self):
         '''
