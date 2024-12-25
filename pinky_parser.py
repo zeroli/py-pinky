@@ -20,6 +20,12 @@ class Parser(object):
         return Ident(self.previous_token().lexeme)
 
     def primary(self):
+        '''
+        <primary> ::= <integer>
+                    | <float>
+                    | <identitifer>
+                    | '(' <expr> ')'
+        '''
         if self.match(TOK_INTEGER):
             return self.interger()
         if self.match(TOK_FLOAT):
@@ -34,8 +40,8 @@ class Parser(object):
 
     def unary(self):
         '''
-        unary ::= ('-' | '+' | '~') unary
-                | primary
+        <unary> ::= ('-' | '+' | '~') <unary>
+                  | <primary>
         '''
         if self.match(TOK_MINUS) or self.match(TOK_PLUS) or self.match(TOK_NOT):
             op = self.previous_token()
@@ -46,13 +52,13 @@ class Parser(object):
 
     def factor(self):
         '''
-        factor ::= unary
+        <factor> ::= <unary>
         '''
         return self.unary()
 
     def term(self):
         '''
-        term ::= factor (('*' | '/') factor)*
+        <term> ::= <factor> (('*' | '/') <factor>)*
         '''
         factor = self.factor()
 
@@ -64,7 +70,7 @@ class Parser(object):
 
     def expr(self):
         '''
-        expr ::= term (('+' | '-') term)*
+        <expr> ::= <term> (('+' | '-') <term>)*
         '''
         term = self.term()
 
