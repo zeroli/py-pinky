@@ -37,6 +37,9 @@ class Lexer(object):
             elif ch == ' ':   pass
             elif ch == '\r': pass
             elif ch == '\t': pass
+            elif ch == '#':
+                while self.lookahead() != '\n':
+                    self.advance()
             elif ch == '+': self.add_token(TOK_PLUS)
             elif ch == '-': self.add_token(TOK_MINUS)
             elif ch == '*': self.add_token(TOK_MUL)
