@@ -2,6 +2,7 @@ import sys
 
 from tokens import *
 from lexer import *
+from pinky_parser import *
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
@@ -13,5 +14,11 @@ if __name__ == '__main__':
         source = f.read()
 
         tokens = Lexer(source).tokenize()
+        print("LEXER:")
         for token in tokens:
             print(token)
+        print()
+
+        ast = Parser(tokens).parse()
+        print("PARSER:")
+        print(ast)

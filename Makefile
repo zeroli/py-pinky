@@ -1,2 +1,2 @@
 run:
-	python pinky.py scripts/myscript.pinky
+	python pinky.py scripts/expr.pinky
