@@ -33,16 +33,32 @@ class Lexer(object):
             self.start = self.curr
             ch = self.advance()
 
-            if    ch == '\n': self.line += 1
-            elif ch == ' ':   pass
+            if   ch == '\n': self.line += 1
+            elif ch == ' ' : pass
             elif ch == '\r': pass
             elif ch == '\t': pass
-            elif ch == '#':
+            elif ch == '#' :
                 while self.lookahead() != '\n':
                     self.advance()
             elif ch == '+': self.add_token(TOK_PLUS)
             elif ch == '-': self.add_token(TOK_MINUS)
-            elif ch == '*': self.add_token(TOK_MUL)
-            elif ch == '/': self.add_token(TOK_DIV)
+            elif ch == '*': self.add_token(TOK_STAR)
+            elif ch == '/': self.add_token(TOK_SLASH)
+            elif ch == '(': self.add_token(TOK_LPAREN)
+            elif ch == ')': self.add_token(TOK_RPAREN)
+            elif ch == '{': self.add_token(TOK_LCURLY)
+            elif ch == '}': self.add_token(TOK_RCURLY)
+            elif ch == '[': self.add_token(TOK_LSQUAR)
+            elif ch == ']': self.add_token(TOK_RSQUAR)
+            elif ch == ',': self.add_token(TOK_COMMA)
+            elif ch == '.': self.add_token(TOK_DOT)
+            elif ch == '^': self.add_token(TOK_CARET)
+            elif ch == '%': self.add_token(TOK_MOD)
+            elif ch == ':': self.add_token(TOK_COLON)
+            elif ch == ';': self.add_token(TOK_SEMICOLON)
+            elif ch == '?': self.add_token(TOK_QUESTION)
+            elif ch == '~': self.add_token(TOK_NOT)
+            elif ch == '>': self.add_token(TOK_GT)
+            elif ch == '<': self.add_token(TOK_LT)
 
         return self.tokens
