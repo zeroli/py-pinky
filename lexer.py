@@ -141,4 +141,9 @@ class Lexer(object):
     def scan_identifier(self):
         while self.peek().isalnum() or self.peek() == '_':
             self.advance()
-        self.add_token(TOK_IDENTIFIER)
+        text = self.source[self.start:self.curr]
+        keyword_type = keywords.get(text)
+        if not keyword_type:
+            self.add_token(TOK_IDENTIFIER)
+        else:
+            self.add_token(keyword_type)
