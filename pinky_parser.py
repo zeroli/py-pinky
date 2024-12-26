@@ -1,5 +1,6 @@
 from tokens import *
 from models import *
+from utils import *
 
 class Parser(object):
     def __init__(self, tokens):
@@ -38,8 +39,7 @@ class Parser(object):
             return self.ident()
         if self.match(TOK_LPAREN):
             expr = self.expr()
-            if not self.match(TOK_RPAREN):
-                raise SyntaxError(f'Expected ")" to close')
+            self.expect(TOK_RPAREN)
             return Group(expr)
 
     def unary(self):
@@ -106,8 +106,10 @@ class Parser(object):
         if matches, consume/return current token, and advance to next token as well
         otherwise, raise error
         '''
+        if self.curr >= len(self.tokens):
+            parse_error(f'Expect {token_type!r}, EOF encountered', self.previous_token().line)
         if not self.match(token_type):
-            raise SyntaxError(f'Expect {token_type!r}, found {self.peek().lexeme!r}')
+            parse_error(f'Expect {token_type!r}, found {self.peek().lexeme!r}', self.peek().line)
         return self.previous_token()
 
     def advance(self):

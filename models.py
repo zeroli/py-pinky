@@ -21,7 +21,7 @@ class Integer(Expr):
         self.value = value
 
     def __repr__(self):
-        return f'Integer({self.value})'
+        return f'Integer[{self.value}]'
 
 class Float(Expr):
     '''
@@ -32,7 +32,7 @@ class Float(Expr):
         self.value = value
 
     def __repr__(self):
-        return f'Float({self.value})'
+        return f'Float[{self.value}]'
 
 class Ident(Expr):
     '''
@@ -42,7 +42,7 @@ class Ident(Expr):
         self.value = value
 
     def __repr__(self):
-        return f'Ident({self.value})'
+        return f'Ident[{self.value}]'
 
 class UnOp(Expr):
     '''
@@ -55,7 +55,7 @@ class UnOp(Expr):
         self.operand = operand
 
     def __repr__(self):
-        return f'UnOp({self.op.lexeme} {self.operand})'
+        return f'({self.op.lexeme} {self.operand})'
 
 
 class BinOp(Expr):
@@ -71,7 +71,7 @@ class BinOp(Expr):
         self.right = right
 
     def __repr__(self):
-        return f'BinOp({self.op.lexeme} {self.left} {self.right})'
+        return f'({self.op.lexeme} {self.left} {self.right})'
 
 class Group(Expr):
     '''
@@ -81,4 +81,4 @@ class Group(Expr):
         self.expr = expr
 
     def __repr__(self):
-        return f'Group({self.expr})'
+        return f'({self.expr})'

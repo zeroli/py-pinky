@@ -1,4 +1,5 @@
 from tokens import *
+from utils import *
 
 class Lexer(object):
     def __init__(self, source):
@@ -110,7 +111,7 @@ class Lexer(object):
             elif ch.isalpha() or ch == '_':
                 self.scan_identifier()
             else:
-                raise SyntaxError(f'line {self.line} Error at `{ch}`: Unexpected character.')
+                lexing_error(f'Error at {ch!r}: Unexpected character.', self.line)
         return self.tokens
 
     def scan_number(self):
@@ -130,7 +131,7 @@ class Lexer(object):
                 self.line += 1
             self.advance()
         if self.eof():
-            raise SyntaxError(f"line {self.line} not closed with quote `{start_quote}` for string")
+            lexing_error(f"Not closed with quote {start_quote!r} for string", self.line)
         self.advance()
         # strip the start/end quote
         self.start += 1
